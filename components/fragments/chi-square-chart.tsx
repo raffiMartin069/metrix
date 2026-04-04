@@ -20,7 +20,7 @@ export default function ChiSquareChart({ curveData, chiSquare, criticalValue }: 
           color: "hsl(0, 84%, 60%)",
         },
       }}
-      className="h-62.5 md:h-87.5 w-full"
+      className="h-[300px] md:h-[400px] w-full"
     >
       <AreaChart data={curveData}>
         <defs>

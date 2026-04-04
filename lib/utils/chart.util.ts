@@ -17,9 +17,9 @@ export class ChartUtil {
     return data;
   }
 
-  static GenerateChartData(observed: number[], expected: number[]) {
+  static GenerateChartData(observed: number[], expected: number[], categories: string[]) {
     return observed.map((oi, i) => ({
-      category: `Cat ${i + 1}`,
+      category: categories[i] || `Cat ${i + 1}`,
       observed: oi,
       expected: expected[i]
     }));

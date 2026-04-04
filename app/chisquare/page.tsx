@@ -14,7 +14,8 @@ import DesktopChiSquareForm from "@/components/fragments/desktop-chi-square-form
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Send, Trash2 } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Send, Trash2, AlertCircle } from "lucide-react";
 import { useChiSquareTable } from "@/hooks/use-chi-square-table";
 import { useChiSquare } from "@/hooks/use-chi-square";
 
@@ -24,15 +25,22 @@ export default function ChiSquare() {
     const [altHypothesis, setAltHypothesis] = useState("");
     const [activeTab, setActiveTab] = useState("calculator");
 
-    // Convert rows to grid format for backward compatibility
-    const grid = [rows.map(r => r.observed)];
-    const stats = useChiSquare(grid);
+    const stats = useChiSquare(rows);
     const criticalValue = stats.criticalValue;
 
     const HandleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        
+        if (!nullHypothesis.trim() || !altHypothesis.trim()) {
+            return;
+        }
+        
         console.log("Chi-square data:", rows);
     };
+
+    const showHypothesisWarning = stats.chartData.length > 0 && 
+        stats.chartData.some(d => d.observed > 0) && 
+        (!nullHypothesis.trim() || !altHypothesis.trim());
 
     return (
         <>
@@ -90,7 +98,16 @@ export default function ChiSquare() {
                                         </CardContent>
                                     </Card>
 
-                                    {stats.chartData.length > 0 && stats.chartData.some(d => d.observed > 0) && (
+                                    {showHypothesisWarning && (
+                                        <Alert variant="destructive" className="shadow-lg">
+                                            <AlertCircle className="h-4 w-4" />
+                                            <AlertDescription>
+                                                Please enter both null and alternative hypotheses before viewing the results.
+                                            </AlertDescription>
+                                        </Alert>
+                                    )}
+
+                                    {stats.chartData.length > 0 && stats.chartData.some(d => d.observed > 0) && nullHypothesis.trim() && altHypothesis.trim() && (
                                         <Card className="shadow-xl">
                                             <CardContent>
                                                 <div className="mb-6">
@@ -150,15 +167,25 @@ export default function ChiSquare() {
                             </form>
 
                             <div>
-                                <DesktopResultsPanel
-                                    chiSquare={stats.chiSquare}
-                                    df={stats.df}
-                                    criticalValue={criticalValue}
-                                    chartData={stats.chartData}
-                                    curveData={stats.curveData}
-                                    nullHypothesis={nullHypothesis}
-                                    altHypothesis={altHypothesis}
-                                />
+                                {showHypothesisWarning && (
+                                    <Alert variant="destructive" className="shadow-lg mb-6">
+                                        <AlertCircle className="h-4 w-4" />
+                                        <AlertDescription>
+                                            Please enter both null and alternative hypotheses before viewing the results.
+                                        </AlertDescription>
+                                    </Alert>
+                                )}
+                                {nullHypothesis.trim() && altHypothesis.trim() && (
+                                    <DesktopResultsPanel
+                                        chiSquare={stats.chiSquare}
+                                        df={stats.df}
+                                        criticalValue={criticalValue}
+                                        chartData={stats.chartData}
+                                        curveData={stats.curveData}
+                                        nullHypothesis={nullHypothesis}
+                                        altHypothesis={altHypothesis}
+                                    />
+                                )}
                             </div>
                         </div>
 

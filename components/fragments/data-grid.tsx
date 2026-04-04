@@ -9,7 +9,7 @@ interface DataGridProps {
   onAddCol: () => void;
 }
 
-export default function DataGrid({ grid, onUpdateCell, onAddRow, onAddCol }: DataGridProps) {
+export default function DataGrid({ grid, onUpdateCell, onAddCol }: DataGridProps) {
   return (
     <div className="border-t border-slate-200 pt-8">
       <div className="flex items-start gap-6">
