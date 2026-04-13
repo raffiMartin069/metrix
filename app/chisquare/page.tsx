@@ -189,10 +189,12 @@ export default function ChiSquare() {
                             </div>
                         </div>
 
-                        {/* Second Row: Documentation */}
-                        <div>
+                        {/* Second Row: Documentation
+                            NOTE: Leave documentation comment out for now, there is no need to show it yet.
+                        */}
+                        {/* <div>
                             <ChiSquareDocumentation />
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </section>
