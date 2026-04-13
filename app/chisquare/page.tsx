@@ -191,6 +191,7 @@ export default function ChiSquare() {
 
                         {/* Second Row: Documentation
                             NOTE: Leave documentation comment out for now, there is no need to show it yet.
+                            Date: April 13, 2026
                         */}
                         {/* <div>
                             <ChiSquareDocumentation />
